@@ -1,0 +1,88 @@
+version: '2.1'
+services:
+
+  config:
+    build: ./config-server/
+    image: config-server
+    restart: always
+    ports:
+      - "8888:8888"
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+
+  eureka:
+    build: ./eureka/
+    image: eureka_server
+    restart: always
+    depends_on:
+          config:
+            condition: service_healthy
+    ports:
+      - "8761:8761"
+    logging:
+          options:
+            max-size: "10m"
+            max-file: "10"
+
+
+  recommendation-server:
+      build: ./recommendation-service/
+      image: recommendation-server
+      restart: always
+      depends_on:
+            config:
+              condition: service_healthy
+      ports:
+        - "8080:8080"
+      logging:
+            options:
+              max-size: "10m"
+              max-file: "10"
+
+  recommendation-client:
+      build: ./recommendation-client/
+      image: recommendation-client
+      restart: always
+      depends_on:
+            config:
+              condition: service_healthy
+      ports:
+        - "8081:8081"
+      logging:
+            options:
+              max-size: "10m"
+              max-file: "10"
+
+  hysrix-dashboard:
+        build: ./hystrix-dashboard/
+        image: hysrix-dashboard
+        restart: always
+        depends_on:
+              config:
+                condition: service_healthy
+        ports:
+          - "9000:9000"
+        logging:
+              options:
+                max-size: "10m"
+                max-file: "10"
+
+  gateway:
+          build: ./gateway/
+          image: gateway
+          restart: always
+          depends_on:
+                config:
+                  condition: service_healthy
+          ports:
+            - "5555:5555"
+          logging:
+                options:
+                  max-size: "10m"
+                  max-file: "10"
+
+
+
+

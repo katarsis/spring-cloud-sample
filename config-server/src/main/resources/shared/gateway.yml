@@ -1,0 +1,21 @@
+server:
+  port: 5555
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://192.168.99.100:8761/eureka}
+    fetchRegistry: true
+    registerWithEureka: true
+#
+#zuul:
+#  ignoredServices: '*'
+#  host:
+#    connect-timeout-millis: 20000
+#    socket-timeout-millis: 20000
+#
+#  routes:
+#    recommendation-client:
+#        path: /uaa/**
+#        url: http://recommendation-client:5000
+#        stripPrefix: false
+#        sensitiveHeaders:
